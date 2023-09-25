@@ -8,10 +8,12 @@ import SearchBar from "./SearchBar";
 import MobileMenu from "./MobileMenu";
 
 import { CgShoppingCart } from "react-icons/cg";
+import { useAppSelector } from "@/redux/store";
 
 
 
 const Header = () => {
+  const totalItems = useAppSelector((state) => state.cart.totalQuantity);
 
 
   return (
@@ -33,8 +35,8 @@ const Header = () => {
           <button className='hidden lg:flex bg-[#F1F1F1] relative p-3 rounded-[50%] border-[none]'>
             <CgShoppingCart size={22} />
             <span className='absolute text-xs text-[#eee] bg-[#f02d34] w-[18px] h-[18px] text-center font-semibold rounded-[50%] right-[5px] top-0'>
-            {/* {totalItems} */}
-            0
+            {totalItems}
+            
             </span>
           </button>
         </Link>

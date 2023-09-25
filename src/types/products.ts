@@ -27,13 +27,15 @@ export interface Productprops {
     name: string;
     totalPrice: number;
     quantity: number;
-    subcat: string; userId: string;
+    subcat: string;
+    userId: string;
     category: string;
     tags: string;
     url: string;
     slug: slugType;
     details: Array<string>;
     image: Image;
+     
   
   
 };
@@ -45,3 +47,13 @@ export interface CartItem {
 export interface responseType {
     response: Array<Productprops>
 }
+
+// export interface Product{
+//     _id: string;
+//     name: string;
+//     price: number;
+//     totalPrice: number;
+//     image: Array<Image>;
+//     userId: string;
+//     quantity:number
+// }

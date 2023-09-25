@@ -6,14 +6,19 @@ import { Productprops } from "@/types/products";
 import Image from "next/image";
 import { urlForImage } from "../../../sanity/lib/image";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { cartActions } from "@/redux/features/cartSlice";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 type Props = {
   products: Productprops;
-
+  //   qty?: number;
+  // userId?: string;
 };
 
 const ProductDetails: React.FC<Props> = ({ products }) => {
+  const dispatch = useDispatch();
   const [qty, setqty] = useState(0);
  
 
@@ -25,6 +30,32 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
       setqty(qty - 1);
     }
   }
+
+  const handleAddtoCart = async () => {
+    const res = await fetch(`http://localhost:3000/api/cart`, {
+      method: "POST",
+      body: JSON.stringify({
+              product_id: products._id,
+                product_name:products.name,
+                image:urlForImage(products.image).url(),
+                price: products.price,
+                quantity:qty,
+                total_price:products.price * qty,
+      })
+    })
+  }
+
+
+  const addToCart = () => {
+    toast.promise(handleAddtoCart(), {
+      loading: "Adding To Cart",
+      success: "Product added To Cart",
+      error: "Failed to Add Product to cart",
+    });
+    console.log("added product")
+    dispatch(cartActions.addToCart({ product: products, quantity: qty }));
+}
+
 
 
   return (
@@ -96,11 +127,12 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
           {/* cart */}
           <div className='flex items-center gap-4'>
             <Button 
-            // onClick={addToCart}
+            onClick={addToCart}
              className='text-sm px-5 gap-0 py-0'>
               <CgShoppingCart className='mr-2  ' size={20} />
               Add to Cart
             </Button>
+            <Toaster/>
 
             <p className=' font-bold text-2xl leading-[30px] tracking-widest text-[#212121]'>
               ${products.price}.00

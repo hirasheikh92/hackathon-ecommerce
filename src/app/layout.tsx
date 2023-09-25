@@ -1,8 +1,9 @@
 import Header from '@/components/view/Header/Header';
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter, Sora } from 'next/font/google'
+import { Sora } from 'next/font/google'
 import Footer from '@/components/view/Footer';
+import ReduxProvider from '@/lib/ReduxProvider';
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <ReduxProvider >
     <html lang="en">
       <body className={`${sora.className} overflow-x-hidden bg-white`}>
       <div className='flex min-h-screen flex-col '>
@@ -26,5 +28,6 @@ export default function RootLayout({
           </div>
           </body>
     </html>
+    </ReduxProvider>
   )
 }
