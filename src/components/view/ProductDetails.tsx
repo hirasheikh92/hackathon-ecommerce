@@ -9,15 +9,16 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/redux/features/cartSlice";
 import toast, { Toaster } from 'react-hot-toast';
+import BASE_PATH_FORAPI from "@/lib/basePathUrl";
 
 
-type Props = {
-  products: Productprops;
+type IProps = {
+  products:Productprops;
   //   qty?: number;
-  // userId?: string;
+  userId?: string;
 };
 
-const ProductDetails: React.FC<Props> = ({ products }) => {
+const ProductDetails = (props: IProps)  => {
   const dispatch = useDispatch();
   const [qty, setqty] = useState(0);
  
@@ -31,29 +32,75 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
     }
   }
 
-  const handleAddtoCart = async () => {
-    const res = await fetch(`http://localhost:3000/api/cart`, {
+   const handleRequestData = async () => {
+    const res = await fetch(`${BASE_PATH_FORAPI}/api/cart/${props.userId}`);
+    if (!res.ok) {
+      throw new Error("Failed to Fetch Data From API");
+    }
+    const data = await res.json();
+    return data;
+  };
+
+  const AddtoCart = async () => {
+    const res = await fetch(`${BASE_PATH_FORAPI}/api/cart`, {
       method: "POST",
       body: JSON.stringify({
-              product_id: products._id,
-                product_name:products.name,
-                image:urlForImage(products.image).url(),
-                price: products.price,
-                quantity:qty,
-                total_price:products.price * qty,
+        product_id: props.products._id,
+        product_name: props.products.name,
+        image: urlForImage(props.products.image).url(),
+        price: props.products.price,
+        quantity: qty,
+        total_price: props.products.price * qty,
       })
     })
   }
 
 
+  const handleCart = async () => {
+    // setIsLoading(true);
+    try {
+      const cartData = await handleRequestData();
+      const existingItem = cartData.cartItems.find(
+        (item:Productprops) => item._id === props.products._id
+      );
+
+      if (existingItem) {
+        const newQuantity = existingItem.quantity + qty;
+        const newPrice = props.products.price * newQuantity;
+        const res = await fetch(
+          `${BASE_PATH_FORAPI}/api/cart`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              product_id: props.products._id,
+              quantity: newQuantity,
+              price: newPrice,
+            }),
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to update data");
+        }
+      } else {
+        // await handleAddToCart();
+      }
+    } catch (error) {
+      console.log((error as { message: string }).message);
+    }
+
+    // setIsLoading(false);
+  };
+
+
   const addToCart = () => {
-    toast.promise(handleAddtoCart(), {
+    toast.promise(handleCart(), {
       loading: "Adding To Cart",
       success: "Product added To Cart",
       error: "Failed to Add Product to cart",
     });
     console.log("added product")
-    dispatch(cartActions.addToCart({ product: products, quantity: qty }));
+    dispatch(cartActions.addToCart({ product: props.products, quantity: qty }));
 }
 
 
@@ -65,7 +112,7 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
         {/* image */}
         <div>
           <Image
-            src={urlForImage(products.image).url()}
+            src={urlForImage(props.products.image).url()}
             className='object-cover cursor-pointer'
             width={100}
             height={100}
@@ -75,7 +122,7 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
         </div>
         <div>
           <Image
-            src={urlForImage(products.image).url()}
+            src={urlForImage(props.products.image).url()}
             className='object-cover'
             width={600}
             height={100}
@@ -88,10 +135,10 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
         <div className='flex flex-col flex-1 gap-10 mt-16'>
           <div className='name-and-category'>
             <h3 className='font-normal text-[1.625rem] leading-[33px] tracking-wider text-[#212121]'>
-              {products.name}
+              {props.products.name}
             </h3>
             <span className='font-semibold text-[1.3rem] opacity-30'>
-              {products.tags}
+              {props.products.tags}
             </span>
           </div>
           {/* size */}
@@ -135,7 +182,7 @@ const ProductDetails: React.FC<Props> = ({ products }) => {
             <Toaster/>
 
             <p className=' font-bold text-2xl leading-[30px] tracking-widest text-[#212121]'>
-              ${products.price}.00
+              ${props.products.price}.00
             </p>
           </div>
         </div>

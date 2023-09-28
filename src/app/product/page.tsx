@@ -8,19 +8,15 @@ import Wrapper from "@/components/view/Wrapper";
 
 
 const getAllProducts = async () => {
- const query = `*[_type == "product" && slug.current == $slug][0]{
-    ...,
+  const query = `*[_type == "product"] {
     _id,
-    _createdAt,
     name,
-    details,
-    care,
-    url,
+    subcat,
+     "image": image[0].asset->url,
     price,
-    "image": image[0].asset->url,
-    "slug":slug.current,
-    content,
-    }`;
+    slug,
+
+  }`;
   const res = await client.fetch(query);
 
   return res;

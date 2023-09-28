@@ -41,6 +41,7 @@ export interface Productprops {
 };
   
 export interface CartItem {
+    cartItems: any;
     product: Productprops;
     qty: number;
   }

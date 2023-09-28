@@ -57,3 +57,31 @@ export const PUT = async (request: NextRequest) => {
         });
     }
 }
+
+
+export const DELETE = async (request: NextRequest) => {
+    const userId = "jjjjj22";
+    const Url = request.nextUrl;
+    try {
+        if (Url.searchParams.has("product_id") && userId) {
+            const product_id = Url.searchParams.get("product_id");
+
+            const res = await db.delete(cartTable).where(and(eq(cartTable.user_id,userId),eq(cartTable.product_id,product_id as string)))
+
+            return NextResponse.json({Message:"Data Removed"},{status:200})
+
+        } else {
+            if (Url.searchParams.has("product_id")) {
+                throw new Error("Login required")
+            } else {
+                 throw new Error("Product Id required")
+            }
+        }
+
+    } catch (error) {
+                console.log(error);
+        return NextResponse.json({
+            Message: "Something went wrong",
+        },{status:405});
+    }
+}

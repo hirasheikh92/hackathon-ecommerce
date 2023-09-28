@@ -1,6 +1,7 @@
 import { Productprops } from '@/types/products';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { urlForImage } from '../../../sanity/lib/image';
 
 export interface CartState {
     items: Array<Productprops>;
@@ -35,6 +36,8 @@ export const cartSlice = createSlice({
                 const totalPrice = newItem.price * action.payload.quantity;
                 state.items.push({
                     ...newItem,
+                    //@ts-ignore
+                    image:urlForImage(newItem.image).url(),
                     quantity: action.payload.quantity,
                     totalPrice,
                 });
@@ -60,26 +63,26 @@ export const cartSlice = createSlice({
             );
         },
 
-        //     removeFromCart(state: CartState, action: PayloadAction<string>) {
-        //       const productId = action.payload;
-        //       const existingItem = state.items.find((item) => item._id === productId);
+            removeFromCart(state: CartState, action: PayloadAction<string>) {
+              const productId = action.payload;
+              const existingItem = state.items.find((item) => item._id === productId);
 
-        //       state.totalQuantity--;
+              state.totalQuantity--;
 
-        //       state.totalAmount = state.totalAmount - existingItem?.price!;
+              state.totalAmount = state.totalAmount - existingItem?.price!;
 
-        //       if (existingItem?.quantity === 1) {
-        //         state.items = state.items.filter((item) => item._id !== productId);
-        //       } else {
-        //         existingItem!.quantity--;
-        //         existingItem!.totalPrice =
-        //           existingItem!.totalPrice - existingItem?.price!;
-        //       }
-        //     },
-        //     clearCart(state) {
-        //       state = initialState;
-        //     },
-        //   },
+              if (existingItem?.quantity === 1) {
+                state.items = state.items.filter((item) => item._id !== productId);
+              } else {
+                existingItem!.quantity--;
+                existingItem!.totalPrice =
+                  existingItem!.totalPrice - existingItem?.price!;
+              }
+            },
+            clearCart(state) {
+              state = initialState;
+            },
+          },
         //   extraReducers: (builder) => {
         //     // handle async actions with builder methods
         //     builder.addCase(fetchData.pending, (state) => {
@@ -100,7 +103,7 @@ export const cartSlice = createSlice({
         //     });
         //   },
     }
-}
+
 );
 
 // export const selectIsLoading = (state: RootState) => state.cart.isLoading;
