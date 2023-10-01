@@ -1,5 +1,6 @@
 import { cartTable, db } from "@/lib/drizzle";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -8,6 +9,11 @@ export const GET = async (
   request: NextRequest,
   { params: { userId } }: { params: { userId: string } }
 ) => {
+
+  ;
+  console.log("user_id", userId)
+
+
   if (!userId) {
     return NextResponse.json({ message: "Invalid User ID" });
   }

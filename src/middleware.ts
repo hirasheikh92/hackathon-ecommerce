@@ -1,0 +1,15 @@
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({
+    publicRoutes: ["/", "/allproducts", "/female", "/male", "/kids", "/api/webhooks/:path*", "/studio/:path*"],
+});
+
+export const config = {
+    matcher: [
+        "/((?!.*\\..*|_next).*)",
+        "/",
+        "/api/cart/:path*",
+        "/product/:path*,/studio/:path*",
+        "/(api|trpc)(.*)",
+    ],
+};

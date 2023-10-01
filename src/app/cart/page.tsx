@@ -5,6 +5,7 @@ import { Toaster, toast } from "react-hot-toast";
 import Wrapper from "@/components/view/Wrapper";
 import CartItemCard from "@/components/view/CartItemCard";
 import StartShopping from "@/components/view/StartShopping";
+import { cookies } from "next/headers";
 
 
 
@@ -67,3 +68,7 @@ const CartData = () => {
 };
 
 export default CartData;
+
+function v4() {
+    throw new Error("Function not implemented.");
+}
