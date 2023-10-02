@@ -22,16 +22,16 @@ const getProductSlug = async () => {
 /**
  * function to generate static static params
  */
-// export async function generateStaticParams() {
-//   let res = await getProductSlug();
-//   let productSlugs: string[] = [];
-//   res.map((prod: { slug: { current: string } }) => {
-//     productSlugs.push(prod.slug.current);
-//   });
-//   return productSlugs.map((slug) => ({
-//     slug: slug,
-//   }));
-// }
+export async function generateStaticParams() {
+  let res = await getProductSlug();
+  let productSlugs: string[] = [];
+  res.map((prod: { slug: { current: string } }) => {
+    productSlugs.push(prod.slug.current);
+  });
+  return productSlugs.map((slug) => ({
+    slug: slug,
+  }));
+}
 
 export default async function page({ params: { slug } }: Props) {
   const query = `*[_type == "product" && slug.current == $slug][0]{

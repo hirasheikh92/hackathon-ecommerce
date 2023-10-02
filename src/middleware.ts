@@ -1,7 +1,7 @@
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-    publicRoutes: ["/", "/allproducts", "/female", "/male", "/kids", "/api/webhooks/:path*", "/studio/:path*"],
+    publicRoutes: ["/", "/allproducts", "/female", "/male", "/kids", "/api/cart/:path*", "/api/webhooks/:path*", "/studio/:path*"],
 });
 
 export const config = {
@@ -9,7 +9,7 @@ export const config = {
         "/((?!.*\\..*|_next).*)",
         "/",
         "/api/cart/:path*",
-        "/product/:path*,/studio/:path*",
+        "/products/:path*,/studio/:path*",
         "/(api|trpc)(.*)",
     ],
 };
