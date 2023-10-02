@@ -48,7 +48,7 @@ const CartItemCard = ({ cartItem }: Props) => {
   };
 
   const handleDelete = async () => {
-    await fetch(`/api/cart/removeitem/${cartItem._id}`, {
+    await fetch(`${BASE_PATH_FORAPI}/api/cart/removeitem/${cartItem._id}`, {
       method: "DELETE",
     });
   };
@@ -85,7 +85,7 @@ const CartItemCard = ({ cartItem }: Props) => {
   };
 
   return (
-    
+
     <div className="flex flex-col sm:flex-row items-center justify-center w-full px-5 py-7 gap-5 border-b border-gray-300 ">
       <div className="">
         <Image
@@ -101,8 +101,8 @@ const CartItemCard = ({ cartItem }: Props) => {
         <div className="flex justify-between items-center w-80 sm:w-full flex-initial">
           <h4>{cartItem.name}</h4>
           <button
-                onClick={rmProduct}
-                  >
+            onClick={rmProduct}
+          >
             <BsTrash size={25} className="cursor-pointer" />
           </button>
         </div>

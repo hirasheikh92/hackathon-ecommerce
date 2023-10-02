@@ -5,7 +5,8 @@ import { Toaster, toast } from "react-hot-toast";
 import Wrapper from "@/components/view/Wrapper";
 import CartItemCard from "@/components/view/CartItemCard";
 import StartShopping from "@/components/view/StartShopping";
-import { cookies } from "next/headers";
+import StripeCheckOutButton from "@/components/view/CheckOut";
+
 
 
 
@@ -44,7 +45,7 @@ const CartData = () => {
                                 </div>
                             </div>
                             <div>
-                                {/* <StripeCheckOutButton products={cartItems} /> */}
+                                <StripeCheckOutButton products={cartItems} />
                             </div>
                         </div>
                     </div>

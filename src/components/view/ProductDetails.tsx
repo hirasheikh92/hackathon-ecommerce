@@ -13,15 +13,15 @@ import BASE_PATH_FORAPI from "@/lib/basePathUrl";
 
 
 type IProps = {
-  products:Productprops;
-  //   qty?: number;
+  products: Productprops;
+  qty?: number;
   userId?: string;
 };
 
-const ProductDetails = (props: IProps)  => {
+const ProductDetails = (props: IProps) => {
   const dispatch = useDispatch();
   const [qty, setqty] = useState(0);
- 
+
 
   function incQuantity() {
     setqty(qty + 1);
@@ -32,8 +32,8 @@ const ProductDetails = (props: IProps)  => {
     }
   }
 
-   const handleRequestData = async () => {
-    const res = await fetch(`${BASE_PATH_FORAPI}/api/cart/${props.userId}`);
+  const handleRequestData = async () => {
+    const res = await fetch(`/api/cart/${props.userId}`);
     if (!res.ok) {
       throw new Error("Failed to Fetch Data From API");
     }
@@ -41,8 +41,8 @@ const ProductDetails = (props: IProps)  => {
     return data;
   };
 
-  const AddtoCart = async () => {
-    const res = await fetch(`${BASE_PATH_FORAPI}/api/cart`, {
+  const handleAddToCart = async () => {
+    const res = await fetch(`/api/cart`, {
       method: "POST",
       body: JSON.stringify({
         product_id: props.products._id,
@@ -53,6 +53,9 @@ const ProductDetails = (props: IProps)  => {
         total_price: props.products.price * qty,
       })
     })
+    if (!res.ok) {
+      throw new Error("Failed to add Data");
+    }
   }
 
 
@@ -61,7 +64,7 @@ const ProductDetails = (props: IProps)  => {
     try {
       const cartData = await handleRequestData();
       const existingItem = cartData.cartItems.find(
-        (item:Productprops) => item._id === props.products._id
+        (item: Productprops) => item._id === props.products._id
       );
 
       if (existingItem) {
@@ -83,7 +86,7 @@ const ProductDetails = (props: IProps)  => {
           throw new Error("Failed to update data");
         }
       } else {
-        // await handleAddToCart();
+        await handleAddToCart();
       }
     } catch (error) {
       console.log((error as { message: string }).message);
@@ -93,7 +96,7 @@ const ProductDetails = (props: IProps)  => {
   };
 
 
-  const addToCart = () => {
+  const addtoCart = () => {
     toast.promise(handleCart(), {
       loading: "Adding To Cart",
       success: "Product added To Cart",
@@ -101,13 +104,13 @@ const ProductDetails = (props: IProps)  => {
     });
     console.log("added product")
     dispatch(cartActions.addToCart({ product: props.products, quantity: qty }));
-}
+  }
 
 
 
   return (
     <>
-     
+
       <div className='flex flex-[2]  gap-8 '>
         {/* image */}
         <div>
@@ -117,7 +120,7 @@ const ProductDetails = (props: IProps)  => {
             width={100}
             height={100}
             alt='image'
-            // onMouseEnter={() => setIndex(ind)}
+          // onMouseEnter={() => setIndex(ind)}
           />
         </div>
         <div>
@@ -127,7 +130,7 @@ const ProductDetails = (props: IProps)  => {
             width={600}
             height={100}
             alt='image'
-            // onMouseEnter={() => setIndex(ind)}
+          // onMouseEnter={() => setIndex(ind)}
           />
         </div>
 
@@ -173,13 +176,13 @@ const ProductDetails = (props: IProps)  => {
           </div>
           {/* cart */}
           <div className='flex items-center gap-4'>
-            <Button 
-            onClick={addToCart}
-             className='text-sm px-5 gap-0 py-0'>
+            <Button
+              onClick={addtoCart}
+              className='text-sm px-5 gap-0 py-0'>
               <CgShoppingCart className='mr-2  ' size={20} />
               Add to Cart
             </Button>
-            <Toaster/>
+            <Toaster />
 
             <p className=' font-bold text-2xl leading-[30px] tracking-widest text-[#212121]'>
               ${props.products.price}.00
