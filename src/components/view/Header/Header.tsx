@@ -25,7 +25,7 @@ const Header = ({ userId
 
 
   return (
-    <header className='relative mx-auto flex w-screen  items-center justify-between px-5 py-4 sm:px-10 md:px-16 md:py-8 lg:px-20'>
+    <header className='relative mx-auto flex w-full  items-center justify-between px-5 py-4 sm:px-10 md:px-16 md:py-8 lg:px-20'>
       {/* <Wrapper className='flex justify-between items-center px-6 py-3 my-2'> */}
       <div className='hidden lg:flex'>
         <Link href={"/"}>

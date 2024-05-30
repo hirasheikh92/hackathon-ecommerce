@@ -8,7 +8,7 @@ import { RiCloseLine, RiMenu3Line } from "react-icons/ri";
 const MobileMenu = () => {
   const [isNavbarOpen, setisNavbarOpen] = useState(false);
   return (
-    <div className='flex flex-col justify-between items-center w-full m-16 lg:hidden'>
+    <div className='flex flex-col justify-between items-center w-full  m-16 lg:hidden'>
       <div
         className='flex justify-between w-full lg:hidden'
         onClick={() => setisNavbarOpen(!isNavbarOpen)}
@@ -34,7 +34,7 @@ const MobileMenu = () => {
       </div>
 
       {isNavbarOpen && (
-        <div className='w-full flex justify-center gap-10  bg-white min-h-screen z-10'>
+        <div className='w-full flex justify-center gap-10  bg-white h-screen z-10'>
           <nav className='flex justify-center items-center flex-col gap-8'>
             <Link href='/cart'>
              {/* <Cart/> */}
